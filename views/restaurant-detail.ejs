@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('includes/head') %>
+    <link rel="stylesheet" href="/styles/restaurants.css" />
+    <!-- We need to set paths as absolute paths, -->
+    <!-- because this page is another step deeper in the url => /restaurants/r1 -->
+  </head>
+  <body>
+    <%- include('includes/header') %> <%- include('includes/side-drawer') %>
+    <main>
+      <h1>Recommended restaurants <%= rid %></h1>
+      <h1>TITLE OF THE RESTAURANT</h1>
+      <p>Cuisine | Address</p>
+      <p>Description of the restaurant</p>
+      <p><a href="">View Website</a></p>
+    </main>
+  </body>
+</html>
+
+<!-- We need to create a separate page with details for every restaurant.  -->
+<!-- So then we can share single restaurant links with others -->
+<!-- We need a way of serving that detail page. -->
+<!-- For that, we need dynamic routes. -->
+<!-- We need to have a unique identifier for every restaurant -->
+<!-- We can't create a individual path like /restaurant1 /restaurant2 for every single restaurant. -->
+<!-- So as a solution, we can create a "single" route in app.js and add a dynamic segment (placeholder) in the path. -->
+<!-- Then we can use the concrete data entered in the URL to load the correct restaurant. -->
+<!-- So the final URLs are like /restaurant/r1 , /restaurant/r2 , /restaurant/r3 -->
