@@ -9,11 +9,11 @@
   <body>
     <%- include('includes/header') %> <%- include('includes/side-drawer') %>
     <main>
-      <h1>Recommended restaurants <%= rid %></h1>
-      <h1>TITLE OF THE RESTAURANT</h1>
-      <p>Cuisine | Address</p>
-      <p>Description of the restaurant</p>
-      <p><a href="">View Website</a></p>
+      <h1><%= rid.name %></h1>
+      <!-- This is how we extract data of a restaurant from the array inside restaurants.json -->
+      <p><%= rid.cuisine %> | <%= rid.address %></p>
+      <p><%= rid.description %></p>
+      <p><a href="<%= rid.website %> ">View Website</a></p>
     </main>
   </body>
 </html>

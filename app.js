@@ -58,7 +58,26 @@ app.get("/restaurants", function (req, res) {
 app.get("/restaurants/:restid", function (req, res) {
   const restaurantId = req.params.restid;
   // .restid is the same on :restid
-  res.render("restaurant-detail", { rid: restaurantId });
+  // params is an object containing parameter values parsed from the URL path.
+  // For example if you have the route /user/:name,
+  // then the "name" from the URL path wil be available as req.params.name .
+
+  const filePath = path.join(__dirname, "data", "restaurants.json");
+  const fileData = fs.readFileSync(filePath);
+  const storedRestaurants = JSON.parse(fileData);
+
+  for (const restaurant of storedRestaurants) {
+    if (restaurant.restid === restaurantId) {
+      // restaurant.restid will find out the id of a specific restaurant from the array.
+      return res.render("restaurant-detail", { rid: restaurant });
+      // The ": restaurant" here is the same "const restaurant" of the for loop.
+      // the item inside that restaurant matches the array item of the restid.
+      // We also need to add the "return" keyword like this.
+    }
+  }
+  // This for loop will check all the items in the array until it find out the matching restid for restaurantId
+  // This for loop is the code used to display the information of a restaurant in the restaurant-detail page.
+  // Now we can share this unique page that displays the content of a specific restaurant with others.
 });
 // This is the route that is responsible for the restaurant-detail page.
 // This is how we add a Dynamic route to our URL
