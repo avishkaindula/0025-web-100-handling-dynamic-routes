@@ -78,6 +78,9 @@ app.get("/restaurants/:restid", function (req, res) {
   // This for loop will check all the items in the array until it find out the matching restid for restaurantId
   // This for loop is the code used to display the information of a restaurant in the restaurant-detail page.
   // Now we can share this unique page that displays the content of a specific restaurant with others.
+
+  res.render("404");
+  // This code line will render 404.ejs and show a 404 error message if the user enter a sub domain that doesn't exist.
 });
 // This is the route that is responsible for the restaurant-detail page.
 // This is how we add a Dynamic route to our URL
