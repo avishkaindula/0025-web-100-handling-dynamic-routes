@@ -94,4 +94,16 @@ app.get("/about", function (req, res) {
   res.render("about");
 });
 
+app.use(function (req, res) {
+  res.render("404");
+});
+// This is how we add a 404 error for "every" wrong incoming request that's possible.
+// We do it by adding our own custom middleware like this.
+// Middleware has a "use" method.
+// And that method has some helper functionality that executes on "every" incoming request.
+// This middleware will handles all the requests that haven't been handled up to this point,
+// and send back a 404 page for all of them.
+// We need to add this 404 middleware at the "bottom" of the app.js
+// We pass our handling function directly to app.use()
+
 app.listen(3000);
