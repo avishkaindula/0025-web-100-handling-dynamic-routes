@@ -106,4 +106,12 @@ app.use(function (req, res) {
 // We need to add this 404 middleware at the "bottom" of the app.js
 // We pass our handling function directly to app.use()
 
+app.use(function (error, req, res, next) {
+  res.render("500");
+});
+// This is how we add a server side error page.
+// This is a middleware that only execute if an error occurred on your server.
+// This function has 4 parameters.
+// This 4 parameters signals to express that this is the special error handling middleware.
+
 app.listen(3000);
