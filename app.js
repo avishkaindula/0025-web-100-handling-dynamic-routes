@@ -79,7 +79,7 @@ app.get("/restaurants/:restid", function (req, res) {
   // This for loop is the code used to display the information of a restaurant in the restaurant-detail page.
   // Now we can share this unique page that displays the content of a specific restaurant with others.
 
-  res.render("404");
+  res.status(404).render("404");
   // This code line will render 404.ejs and show a 404 error message if the user enter a sub domain that doesn't exist.
 });
 // This is the route that is responsible for the restaurant-detail page.
@@ -95,7 +95,7 @@ app.get("/about", function (req, res) {
 });
 
 app.use(function (req, res) {
-  res.render("404");
+  res.status(404).render("404");
 });
 // This is how we add a 404 error for "every" wrong incoming request that's possible.
 // We do it by adding our own custom middleware like this.
@@ -105,9 +105,10 @@ app.use(function (req, res) {
 // and send back a 404 page for all of them.
 // We need to add this 404 middleware at the "bottom" of the app.js
 // We pass our handling function directly to app.use()
+// We should also pass a status number describing the kind of status by using .status()
 
 app.use(function (error, req, res, next) {
-  res.render("500");
+  res.status(500).render("500");
 });
 // This is how we add a server side error page.
 // This is a middleware that only execute if an error occurred on your server.
