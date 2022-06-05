@@ -32,13 +32,13 @@ app.post("/recommend", function (req, res) {
   // Those ids are actually strings.
   // Now every restaurant we add will have a unique id.
 
-  const filePath = path.join(__dirname, "data", "restaurants.json");
-  const fileData = fs.readFileSync(filePath);
-  const storedRestaurants = JSON.parse(fileData);
+  const storedRestaurants = getStoredRestaurants();
+  // This will return the getStoredRestaurants() function which is seated inside the restaurant-data.js file.
 
   storedRestaurants.push(restaurant);
 
-  fs.writeFileSync(filePath, JSON.stringify(storedRestaurants));
+  storeRestaurants(storedRestaurants);
+  // This will execute the storeRestaurants function which is seated inside the restaurant-data.js file.
 
   res.redirect("/confirm");
 });
