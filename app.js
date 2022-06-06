@@ -6,6 +6,10 @@ const uuid = require("uuid");
 // uuid is a JS package that generates unique IDs
 // uuid is an object
 
+const resData = require("./util/restaurant-data");
+// This is how we add the restaurant-data.js file to the app.js file.
+// ./ will start the path "relative" to the app.js file.
+
 const app = express();
 
 app.set("views", path.join(__dirname, "views"));
@@ -32,22 +36,23 @@ app.post("/recommend", function (req, res) {
   // Those ids are actually strings.
   // Now every restaurant we add will have a unique id.
 
-  const storedRestaurants = getStoredRestaurants();
+  const storedRestaurants = resData.getStoredRestaurants();
   // This will return the getStoredRestaurants() function which is seated inside the restaurant-data.js file.
 
   storedRestaurants.push(restaurant);
 
-  storeRestaurants(storedRestaurants);
+  resData.storeRestaurants(storedRestaurants);
   // This will execute the storeRestaurants function which is seated inside the restaurant-data.js file.
 
   res.redirect("/confirm");
 });
 
 app.get("/restaurants", function (req, res) {
-  const filePath = path.join(__dirname, "data", "restaurants.json");
-
-  const fileData = fs.readFileSync(filePath);
-  const storedRestaurants = JSON.parse(fileData);
+  // const filePath = path.join(__dirname, "data", "restaurants.json");
+  // const fileData = fs.readFileSync(filePath);
+  // const storedRestaurants = JSON.parse(fileData);
+  // The above code is replaced by the following code.
+  const storedRestaurants = resData.getStoredRestaurants();
 
   res.render("restaurants", {
     numberOfRestaurants: storedRestaurants.length,
@@ -62,9 +67,7 @@ app.get("/restaurants/:restid", function (req, res) {
   // For example if you have the route /user/:name,
   // then the "name" from the URL path wil be available as req.params.name .
 
-  const filePath = path.join(__dirname, "data", "restaurants.json");
-  const fileData = fs.readFileSync(filePath);
-  const storedRestaurants = JSON.parse(fileData);
+  const storedRestaurants = resData.getStoredRestaurants();
 
   for (const restaurant of storedRestaurants) {
     if (restaurant.restid === restaurantId) {
