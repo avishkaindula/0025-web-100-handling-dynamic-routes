@@ -1,14 +1,13 @@
-const fs = require("fs");
 const path = require("path");
 
 const express = require("express");
-const uuid = require("uuid");
-// uuid is a JS package that generates unique IDs
-// uuid is an object
 
-const resData = require("./util/restaurant-data");
-// This is how we add the restaurant-data.js file to the app.js file.
+const defaultRoutes = require("./routes/default");
+// This is how we add the default.js file into the app.js file.
 // ./ will start the path "relative" to the app.js file.
+// Which means the routes folder is seated in the same level as app.js
+const restaurantsRoutes = require("./routes/restaurants");
+// This is how we add the restaurants.js file into the app.js file.
 
 const app = express();
 
@@ -18,84 +17,10 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", function (req, res) {
-  res.render("index");
-});
-
-app.get("/recommend", function (req, res) {
-  res.render("recommend");
-});
-
-app.post("/recommend", function (req, res) {
-  const restaurant = req.body;
-
-  restaurant.restid = uuid.v4();
-  // restid is a property that doesn't exist on restaurant object yet.
-  // But right after we access a property that doesn't exist, JS will automatically create that property for us.
-  // .v4() method will dive us unique ids.
-  // Those ids are actually strings.
-  // Now every restaurant we add will have a unique id.
-
-  const storedRestaurants = resData.getStoredRestaurants();
-  // This will return the getStoredRestaurants() function which is seated inside the restaurant-data.js file.
-
-  storedRestaurants.push(restaurant);
-
-  resData.storeRestaurants(storedRestaurants);
-  // This will execute the storeRestaurants function which is seated inside the restaurant-data.js file.
-
-  res.redirect("/confirm");
-});
-
-app.get("/restaurants", function (req, res) {
-  // const filePath = path.join(__dirname, "data", "restaurants.json");
-  // const fileData = fs.readFileSync(filePath);
-  // const storedRestaurants = JSON.parse(fileData);
-  // The above code is replaced by the following code.
-  const storedRestaurants = resData.getStoredRestaurants();
-
-  res.render("restaurants", {
-    numberOfRestaurants: storedRestaurants.length,
-    restaurants: storedRestaurants,
-  });
-});
-
-app.get("/restaurants/:restid", function (req, res) {
-  const restaurantId = req.params.restid;
-  // .restid is the same on :restid
-  // params is an object containing parameter values parsed from the URL path.
-  // For example if you have the route /user/:name,
-  // then the "name" from the URL path wil be available as req.params.name .
-
-  const storedRestaurants = resData.getStoredRestaurants();
-
-  for (const restaurant of storedRestaurants) {
-    if (restaurant.restid === restaurantId) {
-      // restaurant.restid will find out the id of a specific restaurant from the array.
-      return res.render("restaurant-detail", { rid: restaurant });
-      // The ": restaurant" here is the same "const restaurant" of the for loop.
-      // the item inside that restaurant matches the array item of the restid.
-      // We also need to add the "return" keyword like this.
-    }
-  }
-  // This for loop will check all the items in the array until it find out the matching restid for restaurantId
-  // This for loop is the code used to display the information of a restaurant in the restaurant-detail page.
-  // Now we can share this unique page that displays the content of a specific restaurant with others.
-
-  res.status(404).render("404");
-  // This code line will render 404.ejs and show a 404 error message if the user enter a sub domain that doesn't exist.
-});
-// This is the route that is responsible for the restaurant-detail page.
-// This is how we add a Dynamic route to our URL
-// "restid" is a dynamic placeholder. We can also use another name instead of restid.
-
-app.get("/confirm", function (req, res) {
-  res.render("confirm");
-});
-
-app.get("/about", function (req, res) {
-  res.render("about");
-});
+app.use("/", defaultRoutes);
+// This "/" tells the browser that every incoming request should also be handled by defaultRoutes.
+// This is how we add the routes inside the default.js into app.js
+app.use("/", restaurantsRoutes);
 
 app.use(function (req, res) {
   res.status(404).render("404");
