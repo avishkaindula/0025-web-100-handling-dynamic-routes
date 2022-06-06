@@ -41,15 +41,49 @@ router.post("/recommend", function (req, res) {
 });
 
 router.get("/restaurants", function (req, res) {
+  // ----------------------------------------------------------------------------------------------------------------
+  let order = req.query.order;
+  // This is how we access the query parameter
+  // We use let instead of const in here.
+  // "order" is the name we set on the hidden input filed of restaurants.ejs
+
+  let nextOrder = "desc";
+
+  if (order !== "asc" && order !== "desc") {
+    order = "asc";
+  }
+
+  if (order === "desc") {
+    nextOrder = "asc";
+  }
+
   // const filePath = path.join(__dirname, "data", "restaurants.json");
   // const fileData = fs.readFileSync(filePath);
   // const storedRestaurants = JSON.parse(fileData);
   // The above code is replaced by the following code.
   const storedRestaurants = resData.getStoredRestaurants();
 
+  storedRestaurants.sort(function (resA, resB) {
+    if (
+      (order === "asc" && resA.name > resB.name) ||
+      (order === "desc" && resB.name > resB.name)
+    ) {
+      return 1;
+    }
+    return -1;
+  });
+  // sort method can be executed on an array of data.
+  // All the restaurants will be compared with each other when the browser does the sorting.
+  // The above code will sort the restaurants by name.
+  // -1 and 1 will flip the positions of the restaurants based on their names.
+  // -------------------------------------------------------------------------------------------------------------------
+  // The above code will sort the restaurants in an ascending order by using "query parameters."
+
   res.render("restaurants", {
     numberOfRestaurants: storedRestaurants.length,
     restaurants: storedRestaurants,
+    nextOrder: nextOrder,
+    // nextOrder is the EJS value of the hidden input field on the restaurants.ejs file.
   });
 });
 
