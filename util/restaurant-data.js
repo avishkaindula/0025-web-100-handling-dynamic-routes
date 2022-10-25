@@ -1,4 +1,4 @@
-// We can split the code in app.js into different files like this.
+// We can split the code in restaurants.js into different files like this.
 
 const fs = require("fs");
 const path = require("path");
