@@ -1,4 +1,8 @@
-// We can split the code in restaurants.js into different files like this.
+// We can split the code in app.js into different files like this.
+// This code will be used for restaurants.js file as we connect this file to restaurants.js via
+// => const resData = require("../util/restaurant-data");
+// We don't require express package as we don't use any functionalities of
+//  that package inside this restaurants-data.js file.
 
 const fs = require("fs");
 const path = require("path");
